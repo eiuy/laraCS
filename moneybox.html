@@ -39,47 +39,107 @@
   <pre>arp-scan -l
 nmap -A -p- [靶機 IP]</pre>
   <p>使用 arp-scan 掃描區域網路取得靶機 IP，接著用 nmap 掃描所有 port。</p>
+  <img src="images/step1_1.png" alt="arp掃描畫面" />
+  <img src="images/step1_2.png" alt="nmap掃描畫面" />
+  <img src="images/step1_3.png" alt="nmap掃描畫面" />
 
   <h2>Flag 1 – 掃目錄發現 Base64</h2>
   <pre>dirsearch -u http://[靶機 IP]
-echo [base64] | base64 -d</pre>
-  <p>發現 /blogs/ 目錄後打開，取得 base64 串解碼出第一個 flag。</p>
+echo "[base64]" | base64 -d</pre>
+  <p>發現 /blogs/ 目錄後打開，取得 base64 串解碼出第一個 flag，以及知道有秘密目錄。</p>
+  <img src="images/Flag1_1.png" alt="dirsearch" />
+  <img src="images/Flag1_2.png" alt="echo解碼" />
 
   <h2>Flag 2 – 檢查原始碼</h2>
+  <pre>echo "[base64]" | base64 -d</pre>
   <p>使用 Firefox 檢視原始碼找到 base64 字串，再解碼獲得第二個 flag。</p>
+  <img src="images/Flag2_1.png" alt="查看網頁原始碼" />
+  <img src="images/Flag2_2.png" alt="echo解碼" />
 
   <h2>Flag 3 – 密碼目錄與 MD5 雜湊</h2>
-  <p>在特定目錄中找到 base64 與 MD5 雜湊字串，準備後續破解。</p>
+  <pre>echo "[base64]" | base64 -d</pre>
+  <p>在特定目錄中找到 base64 透過解碼得到 flag3，以及得到 MD5 雜湊字串，提示為圖片的密碼準備後續破解。</p>
+  <img src="images/Flag3_1.png" alt="查看網頁原始碼" />
+  <img src="images/Flag3_2.png" alt="echo解碼" />
+  <pre>ftp [靶機 IP]</pre>
+  <p>[ip] 連 ftp，以及看資料夾中的檔案，找到 trytofind.jpg 並下載到 kali。</p>
+  <img src="images/Flag3_3.png" alt="ftp connect" />
 
   <h2>Flag 4 – 圖片藏密 + 密碼破解</h2>
-  <pre>ftp [靶機 IP]
-hashbuster
+  <pre>hashbuster
 steghide extract -sf trytofind.jpg</pre>
-  <p>下載圖片後用 steghide 解開藏入的 flag 並解碼。</p>
+  <p>將提示的密碼經由 hashbuster 工具破解，下載圖片後用 steghide 解開藏入的 flag 並解碼，
+    以及獲得提示 renu 這個 account 可以 hydra。</p>
+  <img src="images/Flag4_1.png" alt="hash nuster" />
+  <img src="images/Flag4_2.png" alt="steghide" />
+  <img src="images/Flag4_3.png" alt="flag4" />
+  <img src="images/Flag4_4.png" alt="echo解碼" />
+  <p>*卡題：在這一步卡了很久，雖然知道是MD5，但原本使用john來破解，一直沒有結果。</p>
+  <img src="images/Flag4_5.png" alt="卡題，john" />
+  
 
   <h2>Flag 5 – SSH 爆破登入</h2>
   <pre>split -l 100000 rockyou.txt chunk_
 hydra -l renu -P chunk_01.txt ssh://[靶機 IP]
 ssh renu@[靶機 IP]</pre>
-  <p>爆破成功登入 renu 使用者後，取得 flag5.txt。</p>
+  <p>我們用split指令將rockyou.txt 檔分成 14 等分之後並同時進行 hydra ，
+    最後破解出 renu 的密碼，爆破成功登入後，取得 flag5.txt。</p>
+  <img src="images/Flag5_1.png" alt="ssh renu account" />
+  <img src="images/Flag5_2.png" alt="ssh renu account" />
+  <img src="images/Flag5_3.png" alt="flag5" />
+  <img src="images/Flag5_4.png" alt="echo解碼" />
+  
 
   <h2>Flag 6 – 進入 jimmy 資料夾</h2>
   <p>在 /etc/passwd 中找到 jimmy，用已知密碼登入並取得 flag6。</p>
+  <img src="images/Flag5_5.png" alt="/etc" />
+  <img src="images/Flag5_6.png" alt="passed" />
+  <img src="images/Flag5_7.png" alt="/etc/passwd" />
+  <img src="images/Flag6_1.png" alt="flag6" />
+  <img src="images/Flag6_2.png" alt="echo解碼" />
 
   <h2>Flag 7 – bash 歷史分析</h2>
-  <p>查看 bash_history 取得線索，找到 temp 中的 flag7.txt。</p>
+  <p>破解 jimmy 密碼並登入其帳號，成功提權到 root ，
+    家目錄裡面有一個 .bash_history 儲存指令歷史的檔案，
+    從中看到有一個疑似 hint.txt 的檔案，但 /tmp 路徑下是沒有的，
+    所以從根目錄裡面發現還有一個 temp 的資料夾，也成功在下面找到 hint.txt 的檔案，
+    透過解碼獲得 flag7 。</p>
+  <img src="images/Flag7_1.png" alt="hydra jimmy" />
+  <img src="images/Flag7_2.png" alt="ssh jimmy account" />
+  <img src="images/Flag7_3.png" alt=".bash_history" />
+  <img src="images/Flag7_4.png" alt="know hint.txt" />
+  <img src="images/Flag7_5.png" alt="/tmp" />
+  <img src="images/Flag7_6.png" alt="/temp" />
+  <img src="images/Flag7_7.png" alt="get hint.txt" />
+  <img src="images/Flag7_8.png" alt="echo解碼" />
+  
 
   <h2>Flag 8 – HTTP 傳輸與 strings 擷取</h2>
-  <p>將檔案搬至 HTTP 路徑，用 wget 下載再用 strings 擷取解碼。</p>
+  <p>在 root 的資料夾裡面有兩個檔案，但都無法直接開啟和下載，
+    因此將檔案移動到 HTTP 伺服器的目錄，並透過 wget 下載檔案。
+    透過 strings 掃描文件中的所有字節，提取出 ASCII 或 Unicode 格式的可見字符串，
+    其中包含一行可以解碼的字串，經由解碼得到 flag8 。 </p>
+  <img src="images/Flag8_1.png" alt="finish.zip and youseeme.jpg" />
+  <img src="images/Flag8_2.png" alt="download" />
+  <img src="images/Flag8_3.png" alt="wget file" />
+  <img src="images/Flag8_4.png" alt="strings解碼" />
+  <img src="images/Flag8_5.png" alt="echo解碼" />
 
   <h2>Flag 9 – 解壓縮 zip 檔</h2>
   <p>根據提示解開 zip 取得 flag9。</p>
+  <img src="images/Flag9_1.png" alt="unzip file" />
+  <img src="images/Flag9_2.png" alt="echo解碼" />
 
   <h2>Flag 10 – 圖檔分析</h2>
-  <p>用 binwalk 解開圖檔中壓縮檔取得 flag10。</p>
+  <p>想到上課的時候老師也是在同一張圖片藏 txt ，
+    使用 binwalk 發現裡面有沒解壓縮的檔案，解完之後就得到 flag10 ！！</p>
+  <img src="images/Flag10_1.png" alt="binwalk file" />
+  <img src="images/Flag10_2.png" alt="echo解碼" />
+  
 
   <h2>Root Flag – 提權</h2>
   <p>成功進入 root 資料夾，讀取 root.txt 取得最終 flag！</p>
+  <img src="images/Flagroot.png" alt="rootflag" />
 
   <p><a href="index.html">← 返回首頁</a></p>
 </body>
