@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <title>MONEYBOX CTF Walkthrough</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #f1f1f1;
+      font-family: sans-serif;
+      padding: 3rem;
+      line-height: 1.7;
+    }
+    h1, h2 {
+      color: #3b82f6;
+    }
+    pre {
+      background-color: #1e1e1e;
+      color: #60a5fa;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    a {
+      color: #60a5fa;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏴 MONEYBOX CTF Walkthrough</h1>
+  <p>這篇紀錄我在 MONEYBOX CTF 中逐步取得 10 個 flag 以及 root 權限的完整過程。</p>
+
+  <h2>Step 1 – 掃描靶機 IP 與開放 Port</h2>
+  <pre>arp-scan -l
+nmap -A -p- [靶機 IP]</pre>
+  <p>使用 arp-scan 掃描區域網路取得靶機 IP，接著用 nmap 掃描所有 port。</p>
+
+  <h2>Flag 1 – 掃目錄發現 Base64</h2>
+  <pre>dirsearch -u http://[靶機 IP]
+echo [base64] | base64 -d</pre>
+  <p>發現 /blogs/ 目錄後打開，取得 base64 串解碼出第一個 flag。</p>
+
+  <h2>Flag 2 – 檢查原始碼</h2>
+  <p>使用 Firefox 檢視原始碼找到 base64 字串，再解碼獲得第二個 flag。</p>
+
+  <h2>Flag 3 – 密碼目錄與 MD5 雜湊</h2>
+  <p>在特定目錄中找到 base64 與 MD5 雜湊字串，準備後續破解。</p>
+
+  <h2>Flag 4 – 圖片藏密 + 密碼破解</h2>
+  <pre>ftp [靶機 IP]
+hashbuster
+steghide extract -sf trytofind.jpg</pre>
+  <p>下載圖片後用 steghide 解開藏入的 flag 並解碼。</p>
+
+  <h2>Flag 5 – SSH 爆破登入</h2>
+  <pre>split -l 100000 rockyou.txt chunk_
+hydra -l renu -P chunk_01.txt ssh://[靶機 IP]
+ssh renu@[靶機 IP]</pre>
+  <p>爆破成功登入 renu 使用者後，取得 flag5.txt。</p>
+
+  <h2>Flag 6 – 進入 jimmy 資料夾</h2>
+  <p>在 /etc/passwd 中找到 jimmy，用已知密碼登入並取得 flag6。</p>
+
+  <h2>Flag 7 – bash 歷史分析</h2>
+  <p>查看 bash_history 取得線索，找到 temp 中的 flag7.txt。</p>
+
+  <h2>Flag 8 – HTTP 傳輸與 strings 擷取</h2>
+  <p>將檔案搬至 HTTP 路徑，用 wget 下載再用 strings 擷取解碼。</p>
+
+  <h2>Flag 9 – 解壓縮 zip 檔</h2>
+  <p>根據提示解開 zip 取得 flag9。</p>
+
+  <h2>Flag 10 – 圖檔分析</h2>
+  <p>用 binwalk 解開圖檔中壓縮檔取得 flag10。</p>
+
+  <h2>Root Flag – 提權</h2>
+  <p>成功進入 root 資料夾，讀取 root.txt 取得最終 flag！</p>
+
+  <p><a href="index.html">← 返回首頁</a></p>
+</body>
+</html>
