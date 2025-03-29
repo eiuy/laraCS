@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fine-tuning DistilBERT</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #f1f1f1;
+      font-family: sans-serif;
+      padding: 2.5rem;
+      line-height: 1.8;
+    }
+    h1, h2 {
+      color: #3b82f6;
+    }
+    pre {
+      background-color: #1e1e1e;
+      color: #60a5fa;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    a {
+      color: #60a5fa;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>🤖 Fine-tuning DistilBERT for Cybersecurity Text Classification</h1>
+  <p>本專案目標為將預訓練語言模型 DistilBERT 微調，應用於資安文本分類任務，如漏洞類型辨識。</p>
+
+  <h2>🔍 專案背景</h2>
+  <p>針對 CVE 或安全通報內容進行分類，模型需判斷其屬於系統漏洞、網路攻擊、應用層問題等。</p>
+
+  <h2>🧱 使用技術</h2>
+  <ul>
+    <li>Hugging Face Transformers（DistilBERT）</li>
+    <li>Python / PyTorch</li>
+    <li>Scikit-learn / Pandas</li>
+    <li>Google Colab for training</li>
+    <li>GitHub 專案管理</li>
+  </ul>
+
+  <h2>📁 專案結構</h2>
+  <pre>
+.
+├── dataset/
+├── model/
+├── preprocessing.py
+├── train.py
+├── inference.py
+├── requirements.txt
+  </pre>
+
+  <h2>🔧 微調流程簡述</h2>
+  <ol>
+    <li>收集並清洗資安相關文本資料</li>
+    <li>使用 DistilBERT tokenizer 處理輸入</li>
+    <li>使用分類任務 head 進行微調訓練</li>
+    <li>驗證準確率與損失，最佳化超參數</li>
+    <li>保存訓練結果並用 inference.py 測試預測</li>
+  </ol>
+
+  <h2>📌 成果與學習</h2>
+  <ul>
+    <li>成功 fine-tune DistilBERT 至資安場景，提升分類表現</li>
+    <li>熟悉 Hugging Face 微調訓練流程與推論</li>
+    <li>體會資料預處理與模型部署的重要性</li>
+  </ul>
+
+  <p>🔗 <a href="https://github.com/eiuy/Data_Science_fo_Cyber_security" target="_blank">
+    查看 GitHub 原始碼</a></p>
+
+  <p><a href="index.html">← 返回首頁</a></p>
+</body>
+</html>
