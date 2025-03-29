@@ -1,28 +1,62 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
-  <title>Lara's Portfolio</title>
+  <title>Lara Lin | Portfolio</title>
   <style>
     body {
       background-color: #0f0f0f;
       color: #f1f1f1;
       font-family: sans-serif;
+      padding: 2rem;
+    }
+    h1 {
       text-align: center;
-      padding: 4rem;
+      color: #3b82f6;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background-color: #1c1c1c;
+      border: 1px solid #333;
+      padding: 1.5rem;
+      border-radius: 12px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+    }
+    .card h2 {
+      color: #60a5fa;
+      margin-bottom: 0.5rem;
+    }
+    .card p {
+      color: #cfcfcf;
     }
     a {
-      color: #3b82f6;
+      color: inherit;
       text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <h1>🧠 Lara Lin's CTF Portfolio</h1>
-  <p>歡迎來到我的資安作品展示頁！</p>
-  <p><a href="moneybox.html">MONEYBOX CTF Walkthrough</a></p>
+  <h1>🧠 Lara Lin's Cybersecurity Portfolio</h1>
+  <div class="grid">
+    <a href="moneybox.html" class="card">
+      <h2>MONEYBOX CTF</h2>
+      <p>完整攻防實戰紀錄，逐步破解 10 個 flag 並成功提權取得 root。</p>
+    </a>
+    <div class="card">
+      <h2>Fine-tuning DistilBERT</h2>
+      <p>即將上線：使用 Python 微調預訓練模型以進行資安文本分類。</p>
+    </div>
+  </div>
 </body>
 </html>
