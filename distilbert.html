@@ -32,49 +32,58 @@
   </style>
 </head>
 <body>
-  <h1>🤖 Fine-tuning DistilBERT for Cybersecurity Text Classification</h1>
-  <p>本專案目標為將預訓練語言模型 DistilBERT 微調，應用於資安文本分類任務，如漏洞類型辨識。</p>
+  <h1>🤖 Fine-tuning DistilBERT 模型的作業系統漏洞分類任務</h1>
+  <p><strong>目標：</strong>針對資安漏洞文本進行分類，利用預訓練語言模型 DistilBERT 微調，建立可辨識漏洞類型（如 OS、Network、Application）的模型，提高網路威脅偵測的精準度與效率。</p>
 
-  <h2>🔍 專案背景</h2>
-  <p>針對 CVE 或安全通報內容進行分類，模型需判斷其屬於系統漏洞、網路攻擊、應用層問題等。</p>
+  <h2>🔍 Downstream 任務</h2>
+  <p>此任務為多分類的 <strong>句子分類任務</strong>，最終輸出對應 CWE 類型之標籤。</p>
 
-  <h2>🧱 使用技術</h2>
+  <h2>🔗 完整程式碼</h2>
+  <p>
+    <a href="https://github.com/eiuy/Data_Science_fo_Cyber_security/blob/main/Vul%20Project.ipynb" target="_blank">
+      查看 GitHub 專案與訓練流程
+    </a>
+  </p>
+
+  <h2>📁 資料集與來源</h2>
   <ul>
-    <li>Hugging Face Transformers（DistilBERT）</li>
-    <li>Python / PyTorch</li>
-    <li>Scikit-learn / Pandas</li>
-    <li>Google Colab for training</li>
-    <li>GitHub 專案管理</li>
+    <li>來自 Kaggle：<a href="https://www.kaggle.com/datasets/iajpeketasinjch/oss-vulnerabilities/data" target="_blank">NVD 作業系統漏洞資料</a></li>
+    <li>總計 168,000 筆資料 → 分為 10,000 筆訓練集 + 1,000 筆測試集</li>
+    <li>使用 CVE / CWE / CPE 格式進行資料清洗與欄位提取</li>
+    <li>分類標籤來源為 CWE (Common Weakness Enumeration)</li>
   </ul>
 
-  <h2>📁 專案結構</h2>
-  <pre>
-.
-├── dataset/
-├── model/
-├── preprocessing.py
-├── train.py
-├── inference.py
-├── requirements.txt
-  </pre>
-
-  <h2>🔧 微調流程簡述</h2>
+  <h2>🧪 資料預處理流程</h2>
   <ol>
-    <li>收集並清洗資安相關文本資料</li>
-    <li>使用 DistilBERT tokenizer 處理輸入</li>
-    <li>使用分類任務 head 進行微調訓練</li>
-    <li>驗證準確率與損失，最佳化超參數</li>
-    <li>保存訓練結果並用 inference.py 測試預測</li>
+    <li>刪除缺失值</li>
+    <li>保留關鍵欄位，轉換為 DataFrame 結構</li>
+    <li>使用 tokenizer 將描述文本轉為模型輸入格式：</li>
+    <pre>tokenize_function(example)</pre>
+    <li>將資料切成固定大小，進行分群處理：</li>
+    <pre>group_texts(examples)</pre>
+    <li>處理標籤欄位 label，從原始 CWE 字串中擷取數字部分做為類別 index</li>
   </ol>
 
-  <h2>📌 成果與學習</h2>
+  <h2>🔧 模型選擇與微調</h2>
+  <p>
+    選用 Hugging Face 提供的 <strong>DistilBERTForSequenceClassification</strong> 架構，原因如下：
+  </p>
   <ul>
-    <li>成功 fine-tune DistilBERT 至資安場景，提升分類表現</li>
-    <li>熟悉 Hugging Face 微調訓練流程與推論</li>
-    <li>體會資料預處理與模型部署的重要性</li>
+    <li>DistilBERT 模型相較 BERT 更輕量，訓練速度快且表現穩定</li>
+    <li>能保留 BERT 模型語意理解與 contextual embedding 的優勢</li>
+    <li>適合中型語料與分類型任務</li>
+    <li>使用 full-mask 預訓練策略進行 fine-tuning</li>
   </ul>
 
-  <p>🔗 <a href="https://github.com/eiuy/Data_Science_fo_Cyber_security/Vul Project.ipynb" target="_blank">
+  <h2>📊 訓練結果與觀察</h2>
+  <ul>
+    <li>原始模型準確率：<strong>13%</strong>（無微調）</li>
+    <li>Fine-tuning 後準確率：<strong>65%</strong>，顯著提升</li>
+    <li>驗證模型可辨識各種資安描述對應的 CWE 類別</li>
+    <li>後續可搭配自動蒐集漏洞描述實現風險分類模型</li>
+  </ul>
+
+  <p>🔗 <a href="https://github.com/eiuy/Data_Science_fo_Cyber_security" target="_blank">
     查看 GitHub 原始碼</a></p>
 
   <p><a href="index.html">← 返回首頁</a></p>
