@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhishGuard | Lara Lin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-wrap { max-width: 960px; margin: 0 auto; padding: 7rem 2rem 5rem; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--muted); text-decoration: none; font-size: 0.875rem;
+      margin-bottom: 2rem; transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--text); }
+
+    /* HERO */
+    .proj-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .proj-title {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 400; line-height: 1.0;
+      margin-bottom: 1.25rem;
+    }
+    .proj-title em { font-style: italic; color: var(--red); }
+    .proj-lead {
+      color: var(--muted); font-size: 1.05rem;
+      line-height: 1.8; max-width: 640px; margin-bottom: 1.5rem;
+    }
+
+    /* TECH STACK */
+    .tech-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; }
+    .tech-pill {
+      background: white; border: 1px solid var(--border);
+      color: var(--muted); font-size: 0.78rem; font-family: var(--mono);
+      padding: 0.3rem 0.75rem; border-radius: 6px;
+    }
+
+    /* STATS */
+    .stats-row {
+      display: flex; gap: 3rem; flex-wrap: wrap;
+      padding: 1.75rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4rem;
+    }
+    .stat-val { font-family: var(--serif); font-style: italic; font-size: 3rem; line-height: 1; color: var(--text); }
+    .stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* SCREENSHOT GALLERY */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.875rem;
+      margin: 1.5rem 0 3rem;
+    }
+    .gallery-grid img {
+      width: 100%; display: block;
+      border-radius: 12px; border: 1px solid var(--border);
+    }
+    .gallery-grid .gallery-wide { grid-column: span 2; }
+
+    /* SECTION */
+    .section { margin: 3.5rem 0; }
+    .section-num {
+      font-family: var(--serif); font-style: italic;
+      font-size: clamp(4rem, 9vw, 7rem);
+      line-height: 0.85; color: #DDD9D0;
+      display: block; margin-bottom: -1rem; user-select: none;
+    }
+    .section-title { font-size: 1.35rem; font-weight: 700; position: relative; z-index: 1; margin-bottom: 1.25rem; }
+
+    /* FEATURE GRID */
+    .feature-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0.875rem; margin: 1.25rem 0;
+    }
+    .feature-card {
+      background: var(--card); border-radius: 14px; padding: 1.25rem;
+    }
+    .feat-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .feat-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .feat-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+    /* PAGE FOOTER */
+    .page-nav {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 1rem;
+      margin-top: 4rem; padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-grid .gallery-wide { grid-column: 1; }
+    }
+    @media (max-width: 400px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul class="nav-left"><li><a href="index.html#projects">projects</a></li></ul>
+    <a href="index.html" class="nav-logo">Lara Lin</a>
+    <ul class="nav-right"><li><a href="index.html#contact">contact</a></li></ul>
+  </nav>
+
+  <div class="page-wrap">
+    <a href="index.html" class="back-link">← 返回作品集</a>
+
+    <div class="proj-tags">
+      <span class="accent-tag">Full-Stack</span>
+      <span class="accent-tag">AI / LLM</span>
+      <span class="accent-tag">Threat Intelligence</span>
+    </div>
+    <h1 class="proj-title">PhishGuard<br><em>釣魚郵件分析平台.</em></h1>
+    <p class="proj-lead">上傳 .eml 原始郵件，AI 自動完成研判、SMTP 路由追蹤、IOC 萃取與情資豐富化，輸出一份可直接呈報主管的繁體中文鑑識報告。</p>
+
+    <div class="tech-row">
+      <span class="tech-pill">React + TypeScript</span>
+      <span class="tech-pill">Express + Node.js</span>
+      <span class="tech-pill">Kimi K2.6</span>
+      <span class="tech-pill">VirusTotal API</span>
+      <span class="tech-pill">URLScan</span>
+      <span class="tech-pill">OpenCTI</span>
+      <span class="tech-pill">jsQR + Jimp</span>
+    </div>
+
+    <div class="stats-row">
+      <div><div class="stat-val">9</div><div class="stat-label">分析步驟</div></div>
+      <div><div class="stat-val">4</div><div class="stat-label">外部情資來源</div></div>
+      <div><div class="stat-val">2</div><div class="stat-label">分析工具</div></div>
+    </div>
+
+    <!-- SCREENSHOTS GALLERY -->
+    <div class="section">
+      <span class="section-num">01</span>
+      <h2 class="section-title">系統畫面</h2>
+      <div class="gallery-grid">
+        <img class="gallery-wide" src="images/phishing/step04_results_verdict.png" alt="AI 研判結果" />
+        <img src="images/phishing/step02_upload_sample_loaded.png" alt="上傳頁面" />
+        <img src="images/phishing/step05_results_routing.png" alt="SMTP 路由" />
+        <img src="images/phishing/step06_results_iocs.png" alt="IOC 列表" />
+        <img src="images/phishing/step07_results_risk.png" alt="風險評分" />
+        <img class="gallery-wide" src="images/phishing/step08_report.png" alt="鑑識報告" />
+        <img src="images/phishing/step03_analyzing.png" alt="分析中" />
+        <img src="images/phishing/step09_history.png" alt="歷史紀錄" />
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="section">
+      <span class="section-num">02</span>
+      <h2 class="section-title">核心功能</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feat-icon">🤖</div>
+          <div class="feat-title">AI 研判引擎</div>
+          <div class="feat-desc">Kimi K2.6 輸出結構化 JSON，包含 PHISHING / SUSPICIOUS / SAFE 研判及社交工程分析。</div>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">🗺️</div>
+          <div class="feat-title">SMTP 路由重建</div>
+          <div class="feat-desc">從 Received headers 重建完整傳遞路徑，自動處理 IPv4-mapped IPv6。</div>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">🔍</div>
+          <div class="feat-title">情資豐富化</div>
+          <div class="feat-desc">VirusTotal、URLScan 沙箱、IP 地理定位、WHOIS 全部並行執行。</div>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">📷</div>
+          <div class="feat-title">QR Code 解碼</div>
+          <div class="feat-desc">附件圖片 QR 解碼，以及偵測 HTML table 拼出的 QR code（駭客規避技術）。</div>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">📄</div>
+          <div class="feat-title">中文報告產生</div>
+          <div class="feat-desc">自動組裝繁體中文分析報告，包含 IOC、風險因素與處置建議。</div>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">🛡️</div>
+          <div class="feat-title">去識別化工具</div>
+          <div class="feat-desc">純前端執行，將 email / IP / hash 替換成無意義 token 以安全分享。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="index.html" class="btn-ghost">← 返回作品集</a>
+      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+        <span class="accent-tag">Full-Stack</span>
+        <span class="accent-tag">AI / LLM</span>
+        <span class="accent-tag">React</span>
+        <span class="accent-tag">Node.js</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer"><p>© 2025 Lara Lin</p></footer>
+</body>
+</html>
