@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -50,19 +51,6 @@
     .stat-val { font-family: var(--serif); font-style: italic; font-size: 3rem; line-height: 1; color: var(--text); }
     .stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.08em; }
 
-    /* SCREENSHOT GALLERY */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.875rem;
-      margin: 1.5rem 0 3rem;
-    }
-    .gallery-grid img {
-      width: 100%; display: block;
-      border-radius: 12px; border: 1px solid var(--border);
-    }
-    .gallery-grid .gallery-wide { grid-column: span 2; }
-
     /* SECTION */
     .section { margin: 3.5rem 0; }
     .section-num {
@@ -71,7 +59,43 @@
       line-height: 0.85; color: #DDD9D0;
       display: block; margin-bottom: -1rem; user-select: none;
     }
-    .section-title { font-size: 1.35rem; font-weight: 700; position: relative; z-index: 1; margin-bottom: 1.25rem; }
+    .section-title { font-size: 1.35rem; font-weight: 700; position: relative; z-index: 1; margin-bottom: 1rem; }
+    .section-text { color: var(--muted); line-height: 1.8; margin-bottom: 1rem; }
+
+    /* GALLERY */
+    .gallery-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.875rem; margin: 1.5rem 0;
+    }
+    .gallery-grid img {
+      width: 100%; display: block;
+      aspect-ratio: 16/10; object-fit: cover; object-position: top;
+      border-radius: 12px; border: 1px solid var(--border);
+    }
+    img.gallery-wide { grid-column: span 2; aspect-ratio: 16/8; }
+
+    /* PIPELINE */
+    .pipeline {
+      display: flex; flex-direction: column; gap: 0;
+      border: 1px solid var(--border); border-radius: 16px;
+      overflow: hidden; margin: 1.5rem 0;
+    }
+    .pipe-step {
+      display: grid; grid-template-columns: 3rem 1fr;
+      align-items: stretch;
+      border-bottom: 1px solid var(--border);
+    }
+    .pipe-step:last-child { border-bottom: none; }
+    .pipe-num {
+      background: var(--card);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
+      border-right: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .pipe-body { padding: 0.875rem 1.25rem; }
+    .pipe-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .pipe-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
 
     /* FEATURE GRID */
     .feature-grid {
@@ -85,6 +109,73 @@
     .feat-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem; }
     .feat-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
 
+    /* IOC TYPES */
+    .ioc-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+    .ioc-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.74rem; font-family: var(--mono);
+      padding: 0.3rem 0.75rem; border-radius: 6px;
+      border: 1px solid;
+    }
+    .ioc-domain  { background: rgba(16,185,129,0.08); color: #065f46; border-color: rgba(16,185,129,0.25); }
+    .ioc-ip      { background: rgba(59,130,246,0.08); color: #1e40af; border-color: rgba(59,130,246,0.25); }
+    .ioc-email   { background: rgba(236,72,153,0.08); color: #9d174d; border-color: rgba(236,72,153,0.25); }
+    .ioc-url     { background: rgba(245,158,11,0.08); color: #78350f; border-color: rgba(245,158,11,0.25); }
+
+    /* ENRICHMENT SOURCES */
+    .enrich-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.75rem; margin: 1.25rem 0;
+    }
+    .enrich-card {
+      background: white; border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem 1.25rem;
+    }
+    .enrich-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.3rem; }
+    .enrich-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+
+    /* DEID TOOL BLOCK */
+    .deid-block {
+      background: var(--text); color: white;
+      border-radius: 20px; padding: 2.5rem;
+      margin: 1.5rem 0;
+    }
+    .deid-title {
+      font-family: var(--serif); font-style: italic;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      margin-bottom: 0.75rem; color: white;
+    }
+    .deid-desc { color: rgba(255,255,255,0.65); line-height: 1.8; margin-bottom: 1.5rem; font-size: 0.95rem; }
+    .deid-types { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .deid-type {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.8);
+      font-size: 0.73rem; font-family: var(--mono);
+      padding: 0.25rem 0.65rem; border-radius: 5px;
+    }
+    .deid-feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .deid-feat { border-top: 1px solid rgba(255,255,255,0.12); padding-top: 0.75rem; }
+    .deid-feat-title { font-size: 0.85rem; font-weight: 700; color: rgba(255,255,255,0.9); margin-bottom: 0.3rem; }
+    .deid-feat-desc { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    /* SAMPLES */
+    .sample-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+    .sample-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      background: var(--card); border-radius: 8px;
+      padding: 0.7rem 1rem; font-size: 0.85rem;
+    }
+    .sample-brand { font-weight: 600; min-width: 90px; }
+    .sample-desc { color: var(--muted); font-size: 0.8rem; }
+    .sample-badge {
+      margin-left: auto; font-size: 0.7rem; font-weight: 600;
+      padding: 0.2rem 0.55rem; border-radius: 4px;
+    }
+    .badge-phish { background: rgba(239,68,68,0.12); color: #991b1b; }
+    .badge-susp  { background: rgba(245,158,11,0.12); color: #78350f; }
+    .badge-safe  { background: rgba(16,185,129,0.12); color: #065f46; }
+
     /* PAGE FOOTER */
     .page-nav {
       display: flex; justify-content: space-between;
@@ -95,8 +186,8 @@
 
     @media (max-width: 640px) {
       .feature-grid { grid-template-columns: 1fr 1fr; }
-      .gallery-grid { grid-template-columns: 1fr; }
-      .gallery-grid .gallery-wide { grid-column: 1; }
+      .enrich-grid  { grid-template-columns: 1fr; }
+      .deid-feature-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 400px) {
       .feature-grid { grid-template-columns: 1fr; }
@@ -120,74 +211,190 @@
       <span class="accent-tag">Threat Intelligence</span>
     </div>
     <h1 class="proj-title">PhishGuard<br><em>釣魚郵件分析平台.</em></h1>
-    <p class="proj-lead">上傳 .eml 原始郵件，AI 自動完成研判、SMTP 路由追蹤、IOC 萃取與情資豐富化，輸出一份可直接呈報主管的繁體中文鑑識報告。</p>
+    <p class="proj-lead">上傳 .eml 原始郵件，AI 自動完成研判、SMTP 路由追蹤、IOC 萃取與情資豐富化，最終輸出一份可直接呈報的繁體中文鑑識報告。附帶獨立開發的郵件去識別化工具，安全分享原始郵件時保護機敏資訊。</p>
 
     <div class="tech-row">
       <span class="tech-pill">React + TypeScript</span>
       <span class="tech-pill">Express + Node.js</span>
-      <span class="tech-pill">Kimi K2.6</span>
+      <span class="tech-pill">Kimi K2</span>
       <span class="tech-pill">VirusTotal API</span>
-      <span class="tech-pill">URLScan</span>
+      <span class="tech-pill">URLScan.io</span>
       <span class="tech-pill">OpenCTI</span>
       <span class="tech-pill">jsQR + Jimp</span>
+      <span class="tech-pill">mailparser</span>
+      <span class="tech-pill">Cheerio</span>
     </div>
 
     <div class="stats-row">
-      <div><div class="stat-val">9</div><div class="stat-label">分析步驟</div></div>
+      <div><div class="stat-val">7</div><div class="stat-label">分析頁面</div></div>
       <div><div class="stat-val">4</div><div class="stat-label">外部情資來源</div></div>
-      <div><div class="stat-val">2</div><div class="stat-label">分析工具</div></div>
+      <div><div class="stat-val">12</div><div class="stat-label">DeID 去識別類型</div></div>
     </div>
 
-    <!-- SCREENSHOTS GALLERY -->
+    <!-- 00 系統截圖 -->
     <div class="section">
-      <span class="section-num">01</span>
+      <span class="section-num">00</span>
       <h2 class="section-title">系統畫面</h2>
       <div class="gallery-grid">
-        <img class="gallery-wide" src="images/phishing/step04_results_verdict.png" alt="AI 研判結果" />
-        <img src="images/phishing/step02_upload_sample_loaded.png" alt="上傳頁面" />
-        <img src="images/phishing/step05_results_routing.png" alt="SMTP 路由" />
-        <img src="images/phishing/step06_results_iocs.png" alt="IOC 列表" />
-        <img src="images/phishing/step07_results_risk.png" alt="風險評分" />
-        <img class="gallery-wide" src="images/phishing/step08_report.png" alt="鑑識報告" />
-        <img src="images/phishing/step03_analyzing.png" alt="分析中" />
-        <img src="images/phishing/step09_history.png" alt="歷史紀錄" />
+        <img class="gallery-wide" src="images/phishing/pg_verdict.png" alt="PhishGuard 研判結果" />
+        <img src="images/phishing/pg_01_upload.png" alt="郵件上傳" />
+        <img src="images/phishing/pg_iocs.png" alt="IOC 指標與風險評分" />
       </div>
     </div>
 
-    <!-- FEATURES -->
+    <!-- 01 分析流程 -->
+    <div class="section">
+      <span class="section-num">01</span>
+      <h2 class="section-title">分析流程</h2>
+      <div class="pipeline">
+        <div class="pipe-step">
+          <div class="pipe-num">01</div>
+          <div class="pipe-body">
+            <div class="pipe-title">上傳郵件</div>
+            <div class="pipe-desc">拖放 .eml 檔案、貼上原始 MIME 文字，或從內建樣本（偽冒台灣品牌）直接載入。上傳後即時預覽 header 與內文，確認後再送出分析。</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">02</div>
+          <div class="pipe-body">
+            <div class="pipe-title">AI 研判</div>
+            <div class="pipe-desc">Kimi K2 依 SPF / DKIM / DMARC 驗證結果、網域一致性、社交工程語氣、連結可疑程度，輸出結構化 JSON：PHISHING / SUSPICIOUS / SAFE、信心分、風險分，以及具體的社交工程手法清單。</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">03</div>
+          <div class="pipe-body">
+            <div class="pipe-title">SMTP 路由重建</div>
+            <div class="pipe-desc">從 Received headers 由下往上解析完整傳遞鏈，標記可疑 hop，自動處理 IPv4-mapped IPv6 格式。</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">04</div>
+          <div class="pipe-body">
+            <div class="pipe-title">IOC 萃取與情資豐富化</div>
+            <div class="pipe-desc">自動提取 domain、IP、email、URL，並行查詢 VirusTotal、URLScan 沙箱、IP 地理定位、WHOIS。QR code 附件與 HTML table 拼出的 QR（常見規避技術）一併解碼。</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">05</div>
+          <div class="pipe-body">
+            <div class="pipe-title">報告輸出 + 情資推送</div>
+            <div class="pipe-desc">產生繁體中文鑑識報告，可選擇 email 寄出。惡意 IOC 同步推送至自架 OpenCTI 平台建立情資庫。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 IOC 情資豐富化 -->
     <div class="section">
       <span class="section-num">02</span>
-      <h2 class="section-title">核心功能</h2>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="feat-icon">🤖</div>
-          <div class="feat-title">AI 研判引擎</div>
-          <div class="feat-desc">Kimi K2.6 輸出結構化 JSON，包含 PHISHING / SUSPICIOUS / SAFE 研判及社交工程分析。</div>
+      <h2 class="section-title">IOC 情資豐富化</h2>
+      <p class="section-text">分析結果頁面（IOC 頁）對每個指標呈現完整情資，IOC 類型：</p>
+      <div class="ioc-row">
+        <span class="ioc-badge ioc-domain">DOMAIN</span>
+        <span class="ioc-badge ioc-ip">IP</span>
+        <span class="ioc-badge ioc-email">EMAIL</span>
+        <span class="ioc-badge ioc-url">URL</span>
+      </div>
+      <div class="enrich-grid">
+        <div class="enrich-card">
+          <div class="enrich-name">VirusTotal</div>
+          <div class="enrich-desc">惡意 / 可疑 / 無害廠商數，比例長條圖視覺化，直連報告頁。</div>
         </div>
-        <div class="feature-card">
-          <div class="feat-icon">🗺️</div>
-          <div class="feat-title">SMTP 路由重建</div>
-          <div class="feat-desc">從 Received headers 重建完整傳遞路徑，自動處理 IPv4-mapped IPv6。</div>
+        <div class="enrich-card">
+          <div class="enrich-name">URLScan.io</div>
+          <div class="enrich-desc">沙箱截圖、最終跳轉 URL、頁面分類，支援 submit 新 URL 並輪詢結果。</div>
         </div>
-        <div class="feature-card">
-          <div class="feat-icon">🔍</div>
-          <div class="feat-title">情資豐富化</div>
-          <div class="feat-desc">VirusTotal、URLScan 沙箱、IP 地理定位、WHOIS 全部並行執行。</div>
+        <div class="enrich-card">
+          <div class="enrich-name">IP 地理定位</div>
+          <div class="enrich-desc">國家、組織、ASN、ISP，搭配國旗 emoji 顯示。</div>
         </div>
-        <div class="feature-card">
-          <div class="feat-icon">📷</div>
-          <div class="feat-title">QR Code 解碼</div>
-          <div class="feat-desc">附件圖片 QR 解碼，以及偵測 HTML table 拼出的 QR code（駭客規避技術）。</div>
+        <div class="enrich-card">
+          <div class="enrich-name">WHOIS</div>
+          <div class="enrich-desc">Registrar、註冊 / 到期日、Nameservers，快速辨識新登記可疑網域。</div>
         </div>
-        <div class="feature-card">
-          <div class="feat-icon">📄</div>
-          <div class="feat-title">中文報告產生</div>
-          <div class="feat-desc">自動組裝繁體中文分析報告，包含 IOC、風險因素與處置建議。</div>
+      </div>
+    </div>
+
+    <!-- 03 內建樣本郵件 -->
+    <div class="section">
+      <span class="section-num">03</span>
+      <h2 class="section-title">內建樣本郵件</h2>
+      <p class="section-text">收集偽冒台灣常見品牌與機關的真實釣魚郵件，讓使用者不需自備測試檔即可直接體驗完整分析流程。</p>
+      <div class="sample-list">
+        <div class="sample-item">
+          <span class="sample-brand">台灣中油</span>
+          <span class="sample-desc">偽冒帳單更新通知，含惡意連結</span>
+          <span class="sample-badge badge-phish">PHISHING</span>
         </div>
-        <div class="feature-card">
-          <div class="feat-icon">🛡️</div>
-          <div class="feat-title">去識別化工具</div>
-          <div class="feat-desc">純前端執行，將 email / IP / hash 替換成無意義 token 以安全分享。</div>
+        <div class="sample-item">
+          <span class="sample-brand">台北捷運</span>
+          <span class="sample-desc">偽冒服務通知，要求帳號驗證</span>
+          <span class="sample-badge badge-phish">PHISHING</span>
+        </div>
+        <div class="sample-item">
+          <span class="sample-brand">監理服務</span>
+          <span class="sample-desc">偽冒通知信，附帶可疑 URL</span>
+          <span class="sample-badge badge-phish">PHISHING</span>
+        </div>
+        <div class="sample-item">
+          <span class="sample-brand">CYBERSEC 2026</span>
+          <span class="sample-desc">QR code 嵌入圖片型釣魚，測試 QR 解碼功能</span>
+          <span class="sample-badge badge-susp">SUSPICIOUS</span>
+        </div>
+        <div class="sample-item">
+          <span class="sample-brand">Momo 購物</span>
+          <span class="sample-desc">電子發票通知（合法來源，測試 SAFE 研判）</span>
+          <span class="sample-badge badge-safe">SAFE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 Mail DeID Tool -->
+    <div class="section">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Mail DeID Tool — 郵件去識別化工具</h2>
+      <p class="section-text">將原始郵件提交給外部工具或 AI 分析前，需先移除機敏資訊。這個獨立開發的純前端工具能自動辨識並以 token 取代所有可識別個人身份的資料。</p>
+
+      <div class="gallery-grid" style="margin-bottom:1.5rem;">
+        <img src="images/phishing/deid_01_empty.png" alt="去識別化工具介面" />
+        <img src="images/phishing/deid_02_result.png" alt="去識別化結果" style="object-position:top;" />
+      </div>
+
+      <div class="deid-block">
+        <h3 class="deid-title">12 種識別類型，全部可自訂</h3>
+        <p class="deid-desc">偵測範圍涵蓋郵件 header 與內文，以 <code style="background:rgba(255,255,255,0.12);padding:0.1rem 0.4rem;border-radius:3px;font-family:var(--mono);font-size:0.85em;">[EMAIL_001]</code> 格式取代，附帶對照表方便追溯。</p>
+        <div class="deid-types">
+          <span class="deid-type">EMAIL</span>
+          <span class="deid-type">IP</span>
+          <span class="deid-type">HASH</span>
+          <span class="deid-type">PATH</span>
+          <span class="deid-type">HOST</span>
+          <span class="deid-type">DOMAIN</span>
+          <span class="deid-type">URL</span>
+          <span class="deid-type">USER</span>
+          <span class="deid-type">SMTP_ID</span>
+          <span class="deid-type">MSG_ID</span>
+          <span class="deid-type">SIG</span>
+          <span class="deid-type">QUEUE_ID</span>
+        </div>
+        <div class="deid-feature-grid">
+          <div class="deid-feat">
+            <div class="deid-feat-title">RFC 2047 解碼</div>
+            <div class="deid-feat-desc">自動展開 Base64 / Quoted-Printable 編碼的 header 欄位再做去識別，不會漏掉中文編碼的寄件者名稱。</div>
+          </div>
+          <div class="deid-feat">
+            <div class="deid-feat-title">排除規則（Regex）</div>
+            <div class="deid-feat-desc">預設排除 RFC 1918 私有 IP，支援自訂 regex 清單，避免過度遮蔽已知安全的內部主機。</div>
+          </div>
+          <div class="deid-feat">
+            <div class="deid-feat-title">收件方全覆蓋</div>
+            <div class="deid-feat-desc">To / Cc / Bcc / Delivered-To / Received: for 全部遮蔽，支援多收件者格式。</div>
+          </div>
+          <div class="deid-feat">
+            <div class="deid-feat-title">純前端執行</div>
+            <div class="deid-feat-desc">資料不離開瀏覽器，支援 .eml .msg .log .txt .csv .json，單檔上限 5 MB。</div>
+          </div>
         </div>
       </div>
     </div>
