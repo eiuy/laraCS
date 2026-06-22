@@ -1,91 +1,215 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
-  <title>Fine-tuning DistilBERT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fine-tuning DistilBERT | Lara Lin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <style>
-    body {
-      background-color: #0f0f0f;
-      color: #f1f1f1;
-      font-family: sans-serif;
+    .page-wrap { max-width: 880px; margin: 0 auto; padding: 7rem 2rem 5rem; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--muted); text-decoration: none; font-size: 0.875rem;
+      margin-bottom: 2rem; transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--text); }
+
+    /* HERO */
+    .proj-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .proj-title {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 400; line-height: 1.05;
+      margin-bottom: 1.25rem;
+    }
+    .proj-title em { font-style: italic; color: var(--red); }
+    .proj-lead {
+      color: var(--muted); font-size: 1.05rem;
+      line-height: 1.8; max-width: 600px; margin-bottom: 2.5rem;
+    }
+
+    /* ACCURACY LIFT — big visual */
+    .accuracy-block {
+      background: var(--card);
+      border-radius: 20px;
       padding: 2.5rem;
-      line-height: 1.8;
+      margin: 2.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      text-align: center;
     }
-    h1, h2 {
-      color: #3b82f6;
+    .acc-num {
+      font-family: var(--serif); font-style: italic;
+      line-height: 1;
     }
-    pre {
-      background-color: #1e1e1e;
-      color: #60a5fa;
-      padding: 1rem;
-      border-radius: 8px;
-      overflow-x: auto;
+    .acc-num.before { font-size: 5rem; color: #C0BCBA; }
+    .acc-num.after  { font-size: 7rem; color: var(--text); }
+    .acc-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.3rem; }
+    .acc-arrow { font-size: 2.5rem; color: var(--red); font-family: var(--serif); }
+
+    /* SECTION */
+    .section { margin: 3.5rem 0; }
+    .section-num {
+      font-family: var(--serif); font-style: italic;
+      font-size: clamp(4rem, 9vw, 7rem);
+      line-height: 0.85; color: #DDD9D0;
+      display: block; margin-bottom: -1rem;
+      user-select: none;
     }
-    a {
-      color: #60a5fa;
-      text-decoration: none;
+    .section-title { font-size: 1.35rem; font-weight: 700; position: relative; z-index: 1; margin-bottom: 0.75rem; }
+    .section-text { color: var(--muted); line-height: 1.8; margin-bottom: 1.25rem; }
+    .section-text strong { color: var(--text); }
+    .section-text a { color: var(--blue); text-decoration: none; }
+    .section-text a:hover { text-decoration: underline; }
+
+    /* LIST */
+    .styled-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .styled-list li {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      color: var(--muted); font-size: 0.925rem; line-height: 1.7;
     }
-    a:hover {
-      text-decoration: underline;
+    .styled-list li::before {
+      content: '→'; color: var(--blue); flex-shrink: 0;
+      font-weight: 600; margin-top: 0.05rem;
+    }
+    .styled-list li strong { color: var(--text); }
+
+    /* STATS ROW */
+    .stats-row {
+      display: flex; gap: 2rem; flex-wrap: wrap;
+      padding: 1.75rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3.5rem;
+    }
+    .stat-val { font-family: var(--serif); font-style: italic; font-size: 3rem; line-height: 1; }
+    .stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* DIVIDER */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 3.5rem 0; }
+
+    /* PAGE FOOTER */
+    .page-nav {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 1rem;
+      margin-top: 4rem; padding-top: 2rem;
+      border-top: 1px solid var(--border);
     }
   </style>
 </head>
 <body>
-  <h1>Fine-tuning DistilBERT 模型的作業系統漏洞分類任務</h1>
-  <p><strong>目標：</strong>針對資安漏洞文本進行分類，利用預訓練語言模型 DistilBERT 微調，建立可辨識漏洞類型（如 OS、Network、Application）的模型，提高網路威脅偵測的精準度與效率。</p>
 
-  <h2>Downstream 任務</h2>
-  <p>此任務為多分類的 <strong>句子分類任務</strong>，最終輸出對應 CWE 類型之標籤。</p>
+  <nav>
+    <ul class="nav-left"><li><a href="index.html#projects">projects</a></li></ul>
+    <a href="index.html" class="nav-logo">Lara Lin</a>
+    <ul class="nav-right"><li><a href="index.html#contact">contact</a></li></ul>
+  </nav>
 
-  <h2>完整程式碼</h2>
-  <p>
-    <a href="https://github.com/eiuy/Data_Science_fo_Cyber_security/blob/main/Vul%20Project.ipynb" target="_blank">
-      查看 GitHub 專案與訓練流程
-    </a>
-  </p>
+  <div class="page-wrap">
+    <a href="index.html" class="back-link">← 返回作品集</a>
 
-  <h2>資料集與來源</h2>
-  <ul>
-    <li>來自 Kaggle：<a href="https://www.kaggle.com/datasets/iajpeketasinjch/oss-vulnerabilities/data" target="_blank">NVD 作業系統漏洞資料</a></li>
-    <li>總計 168,000 筆資料 → 分為 10,000 筆訓練集 + 1,000 筆測試集</li>
-    <li>使用 CVE / CWE / CPE 格式進行資料清洗與欄位提取</li>
-    <li>分類標籤來源為 CWE (Common Weakness Enumeration)</li>
-  </ul>
+    <div class="proj-tags">
+      <span class="accent-tag">NLP</span>
+      <span class="accent-tag">Machine Learning</span>
+      <span class="accent-tag">Security AI</span>
+    </div>
+    <h1 class="proj-title">Fine-tuning DistilBERT<br><em>漏洞分類模型.</em></h1>
+    <p class="proj-lead">利用預訓練語言模型 DistilBERT 微調，針對資安漏洞描述文本建立多分類模型，可辨識 CWE 漏洞類型，顯著提升威脅偵測精準度。</p>
 
-  <h2>資料預處理流程</h2>
-  <ol>
-    <li>刪除缺失值</li>
-    <li>保留關鍵欄位，轉換為 DataFrame 結構</li>
-    <li>使用 tokenizer 將描述文本轉為模型輸入格式：</li>
-    <pre>tokenize_function(example)</pre>
-    <li>將資料切成固定大小，進行分群處理：</li>
-    <pre>group_texts(examples)</pre>
-    <li>處理標籤欄位 label，從原始 CWE 字串中擷取數字部分做為類別 index</li>
-  </ol>
+    <!-- ACCURACY LIFT -->
+    <div class="accuracy-block">
+      <div>
+        <div class="acc-num before">13%</div>
+        <div class="acc-label">微調前準確率</div>
+      </div>
+      <div class="acc-arrow">→</div>
+      <div>
+        <div class="acc-num after">65%</div>
+        <div class="acc-label">微調後準確率</div>
+      </div>
+    </div>
 
-  <h2>模型選擇與微調</h2>
-  <p>
-    選用 Hugging Face 提供的 <strong>DistilBERTForSequenceClassification</strong> 架構，原因如下：
-  </p>
-  <ul>
-    <li>DistilBERT 模型相較 BERT 更輕量，訓練速度快且表現穩定</li>
-    <li>能保留 BERT 模型語意理解與 contextual embedding 的優勢</li>
-    <li>適合中型語料與分類型任務</li>
-    <li>使用 full-mask 預訓練策略進行 fine-tuning</li>
-  </ul>
+    <div class="stats-row">
+      <div><div class="stat-val">168K</div><div class="stat-label">原始資料筆數</div></div>
+      <div><div class="stat-val">10K</div><div class="stat-label">訓練集採樣</div></div>
+      <div><div class="stat-val">1K</div><div class="stat-label">測試集</div></div>
+    </div>
 
-  <h2>訓練結果與觀察</h2>
-  <ul>
-    <li>原始模型準確率：<strong>13%</strong>（無微調）</li>
-    <li>Fine-tuning 後準確率：<strong>65%</strong>，顯著提升</li>
-    <li>展現透過微調技術強化模型效能的能力，並因計算資源有限，在有限訓練次數下達成提升<li>
-    <li>驗證模型可辨識各種資安描述對應的 CWE 類別</li>
-    <li>後續可搭配自動蒐集漏洞描述實現風險分類模型</li>
-  </ul>
+    <!-- SECTIONS -->
+    <div class="section">
+      <span class="section-num">01</span>
+      <h2 class="section-title">任務定義</h2>
+      <p class="section-text">
+        此為多分類的<strong>句子分類任務（Sentence Classification）</strong>，
+        輸入資安漏洞描述文本，輸出對應的 CWE 類別標籤。
+        <br><br>
+        <a href="https://github.com/eiuy/Data_Science_fo_Cyber_security/blob/main/Vul%20Project.ipynb" target="_blank">→ 查看完整 Jupyter Notebook 程式碼</a>
+      </p>
+    </div>
 
-  <p><a href="https://github.com/eiuy/Data_Science_fo_Cyber_security" target="_blank">
-    查看 GitHub 原始碼</a></p>
+    <div class="section">
+      <span class="section-num">02</span>
+      <h2 class="section-title">資料集</h2>
+      <ul class="styled-list">
+        <li>來源：<strong>Kaggle — NVD 作業系統漏洞資料</strong>，共 168,000 筆</li>
+        <li>採樣 <strong>10,000 筆</strong>訓練 + 1,000 筆測試</li>
+        <li>資料格式：CVE / CWE / CPE 結構化標準</li>
+        <li>分類標籤來自 CWE (Common Weakness Enumeration)</li>
+      </ul>
+    </div>
 
-  <p><a href="index.html">← 返回首頁</a></p>
+    <div class="section">
+      <span class="section-num">03</span>
+      <h2 class="section-title">資料預處理</h2>
+      <p class="section-text">刪除缺失值、保留關鍵欄位後，用 DistilBERT tokenizer 將文本轉為模型輸入格式，再切分固定長度區塊。</p>
+      <pre>tokenize_function(example)
+group_texts(examples)   # 切分固定長度區塊</pre>
+      <p class="section-text">從 CWE 字串擷取數字部分作為類別 index，完成標籤處理。</p>
+    </div>
+
+    <div class="section">
+      <span class="section-num">04</span>
+      <h2 class="section-title">模型選擇</h2>
+      <p class="section-text">選用 Hugging Face 的 <strong>DistilBERTForSequenceClassification</strong>：</p>
+      <ul class="styled-list">
+        <li>比 BERT 輕量，訓練速度快且表現穩定</li>
+        <li>保留 BERT 的語意理解與 contextual embedding 優勢</li>
+        <li>適合中型語料與多分類任務</li>
+        <li>使用 full-mask 預訓練策略進行 fine-tuning</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <span class="section-num">05</span>
+      <h2 class="section-title">後續展望</h2>
+      <ul class="styled-list">
+        <li>搭配自動爬取 CVE 描述，實現即時漏洞風險分類</li>
+        <li>增加訓練資料量以進一步提升準確率</li>
+        <li>嘗試完整 BERT 或 RoBERTa 以比較效能</li>
+      </ul>
+      <p class="section-text" style="margin-top:1.25rem;">
+        <a href="https://github.com/eiuy/Data_Science_fo_Cyber_security" target="_blank">→ 查看 GitHub 原始碼</a>
+      </p>
+    </div>
+
+    <div class="page-nav">
+      <a href="index.html" class="btn-ghost">← 返回作品集</a>
+      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+        <span class="accent-tag">NLP</span>
+        <span class="accent-tag">Machine Learning</span>
+        <span class="accent-tag">Python</span>
+        <span class="accent-tag">Hugging Face</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer"><p>© 2025 Lara Lin</p></footer>
 </body>
 </html>
