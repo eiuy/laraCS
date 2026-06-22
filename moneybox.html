@@ -3,144 +3,350 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
-  <title>MONEYBOX CTF Walkthrough</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MONEYBOX CTF | Lara Lin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <style>
-    body {
-      background-color: #0f0f0f;
-      color: #f1f1f1;
-      font-family: sans-serif;
-      padding: 3rem;
-      line-height: 1.7;
+    .page-wrap { max-width: 960px; margin: 0 auto; padding: 7rem 2rem 5rem; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--muted); text-decoration: none; font-size: 0.875rem;
+      margin-bottom: 2rem; transition: color 0.15s;
     }
-    h1, h2 {
-      color: #3b82f6;
+    .back-link:hover { color: var(--text); }
+
+    /* HERO */
+    .proj-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .proj-title {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 7vw, 5.2rem);
+      font-weight: 400; line-height: 1.0;
+      margin-bottom: 1.25rem;
     }
-    pre {
-      background-color: #1e1e1e;
-      color: #60a5fa;
-      padding: 1rem;
-      border-radius: 8px;
-      overflow-x: auto;
+    .proj-title em { font-style: italic; color: var(--red); }
+    .proj-lead {
+      color: var(--muted); font-size: 1.05rem;
+      line-height: 1.8; max-width: 620px; margin-bottom: 2.5rem;
     }
-    a {
-      color: #60a5fa;
-      text-decoration: none;
+
+    /* STATS */
+    .stats-row {
+      display: flex; gap: 3rem; flex-wrap: wrap;
+      padding: 1.75rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4.5rem;
     }
-    a:hover {
-      text-decoration: underline;
+    .stat-val {
+      font-family: var(--serif); font-style: italic;
+      font-size: 3.5rem; line-height: 1; color: var(--text);
+    }
+    .stat-label {
+      font-size: 0.72rem; color: var(--muted);
+      margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.08em;
+    }
+
+    /* STEPS */
+    .steps { display: flex; flex-direction: column; gap: 5rem; }
+
+    .step-num {
+      font-family: var(--serif); font-style: italic;
+      font-size: clamp(5rem, 11vw, 9rem);
+      line-height: 0.85; color: #DDD9D0;
+      display: block; margin-bottom: -1.25rem;
+      user-select: none;
+    }
+    .step-title {
+      font-size: 1.45rem; font-weight: 700;
+      position: relative; z-index: 1; margin-bottom: 0.75rem;
+    }
+    .step-text {
+      color: var(--muted); line-height: 1.8;
+      margin-bottom: 1.25rem; max-width: 680px;
+    }
+
+    /* IMAGE GRIDS */
+    .img-full { margin: 1.25rem 0; }
+    .img-full img {
+      width: 100%; display: block;
+      border-radius: 12px; border: 1px solid var(--border);
+    }
+    .img-pair {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.75rem; margin: 1.25rem 0;
+    }
+    .img-trio {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 0.75rem; margin: 1.25rem 0;
+    }
+    .img-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.75rem; margin: 1.25rem 0;
+    }
+    .img-pair img, .img-trio img, .img-grid img {
+      width: 100%; display: block;
+      border-radius: 10px; border: 1px solid var(--border);
+    }
+
+    /* 卡關 CALLOUT */
+    .callout-stuck {
+      background: #FFFAEB;
+      border: 1.5px solid #F0CA40;
+      border-left: 4px solid #D97706;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .stuck-label {
+      font-family: var(--hand);
+      font-size: 1.1rem; color: #92400E;
+      margin-bottom: 0.4rem;
+    }
+    .callout-stuck p { color: #78350F; font-size: 0.9rem; line-height: 1.75; }
+    .callout-stuck strong { color: #451A03; }
+
+    /* ROOT BLOCK */
+    .root-block {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .root-num {
+      font-family: var(--serif); font-style: italic;
+      font-size: clamp(4rem, 10vw, 7rem);
+      line-height: 0.85; color: #DDD9D0;
+      display: block; margin-bottom: -0.75rem;
+      user-select: none;
+    }
+    .root-title {
+      font-family: var(--serif); font-style: italic;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 0.75rem;
+    }
+    .root-title span { color: var(--red); }
+    .root-desc { color: var(--muted); margin-bottom: 1.75rem; }
+
+    /* PAGE FOOTER */
+    .page-nav {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 1rem;
+      margin-top: 4rem; padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      .img-pair, .img-trio, .img-grid { grid-template-columns: 1fr; }
+      .stats-row { gap: 1.5rem; }
     }
   </style>
 </head>
 <body>
-  <h1>🏴 MONEYBOX CTF Walkthrough</h1>
-  <p>這篇紀錄我在 MONEYBOX CTF 中逐步取得 10 個 flag 以及 root 權限的完整過程。</p>
 
-  <h2>Step 1 – 掃描靶機 IP 與開放 Port</h2>
-  <pre>arp-scan -l
+  <nav>
+    <ul class="nav-left"><li><a href="index.html#projects">projects</a></li></ul>
+    <a href="index.html" class="nav-logo">Lara Lin</a>
+    <ul class="nav-right"><li><a href="index.html#contact">contact</a></li></ul>
+  </nav>
+
+  <div class="page-wrap">
+    <a href="index.html" class="back-link">← 返回作品集</a>
+
+    <!-- HERO -->
+    <div class="proj-tags">
+      <span class="accent-tag">CTF</span>
+      <span class="accent-tag">Penetration Testing</span>
+      <span class="accent-tag">Privilege Escalation</span>
+    </div>
+    <h1 class="proj-title">MONEYBOX CTF<br><em>Walkthrough.</em></h1>
+    <p class="proj-lead">完整攻防實戰紀錄——逐步破解 10 個 flag，涵蓋網路掃描、目錄爆破、圖片隱寫、密碼破解、SSH 爆破等完整攻擊鏈，最終成功提權取得 root。</p>
+
+    <div class="stats-row">
+      <div><div class="stat-val">10</div><div class="stat-label">Flags Captured</div></div>
+      <div><div class="stat-val">01</div><div class="stat-label">Root Shell</div></div>
+      <div><div class="stat-val">6+</div><div class="stat-label">Techniques</div></div>
+    </div>
+
+    <!-- STEPS -->
+    <div class="steps">
+
+      <!-- 01 -->
+      <div class="step">
+        <span class="step-num">01</span>
+        <h2 class="step-title">掃描靶機 IP 與開放 Port</h2>
+        <p class="step-text">arp-scan 找到靶機 IP，nmap 全 port 掃描取得服務版本與作業系統資訊。</p>
+        <pre>arp-scan -l
 nmap -A -p- [靶機 IP]</pre>
-  <p>使用 arp-scan 掃描區域網路取得靶機 IP，接著用 nmap 掃描所有 port。</p>
-  <img src="images/step1_1.png" alt="arp掃描畫面" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;" />
-  <img src="images/step1_2.png" alt="nmap掃描畫面" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/step1_3.png" alt="nmap掃描畫面" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;" />
+        <div class="img-trio">
+          <img src="images/step1_1.png" alt="arp-scan" />
+          <img src="images/step1_2.png" alt="nmap" />
+          <img src="images/step1_3.png" alt="nmap results" />
+        </div>
+      </div>
 
-  <h2>Flag 1 – 掃目錄發現 Base64</h2>
-  <pre>dirsearch -u http://[靶機 IP]
+      <!-- F1 -->
+      <div class="step">
+        <span class="step-num">F1</span>
+        <h2 class="step-title">目錄掃描發現 Base64</h2>
+        <p class="step-text">dirsearch 爆破目錄，在 /blogs/ 路徑取得 base64 字串，解碼得到 flag 1 及秘密目錄提示。</p>
+        <pre>dirsearch -u http://[靶機 IP]
 echo "[base64]" | base64 -d</pre>
-  <p>發現 /blogs/ 目錄後打開，取得 base64 串解碼出第一個 flag，以及知道有秘密目錄。</p>
-  <img src="images/Flag1_1.png" alt="dirsearch" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag1_2.png" alt="echo解碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
+        <div class="img-pair">
+          <img src="images/Flag1_1.png" alt="dirsearch" />
+          <img src="images/Flag1_2.png" alt="decode" />
+        </div>
+      </div>
 
-  <h2>Flag 2 – 檢查原始碼</h2>
-  <pre>echo "[base64]" | base64 -d</pre>
-  <p>使用 Firefox 檢視原始碼找到 base64 字串，再解碼獲得第二個 flag。</p>
-  <img src="images/Flag2_1.png" alt="查看網頁原始碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag2_2.png" alt="echo解碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
+      <!-- F2 -->
+      <div class="step">
+        <span class="step-num">F2</span>
+        <h2 class="step-title">檢查頁面原始碼</h2>
+        <p class="step-text">開發者工具找到隱藏的 base64 字串，解碼取得 flag 2。</p>
+        <pre>echo "[base64]" | base64 -d</pre>
+        <div class="img-pair">
+          <img src="images/Flag2_1.png" alt="view source" />
+          <img src="images/Flag2_2.png" alt="decoded" />
+        </div>
+      </div>
 
-  <h2>Flag 3 – 密碼目錄與 MD5 雜湊</h2>
-  <pre>echo "[base64]" | base64 -d</pre>
-  <p>在特定目錄中找到 base64 透過解碼得到 flag3，以及得到 MD5 雜湊字串，提示為圖片的密碼準備後續破解。</p>
-  <img src="images/Flag3_1.png" alt="查看網頁原始碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag3_2.png" alt="echo解碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <pre>ftp [靶機 IP]</pre>
-  <p>[ip] 連 ftp，以及看資料夾中的檔案，找到 trytofind.jpg 並下載到 kali。</p>
-  <img src="images/Flag3_3.png" alt="ftp connect" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;" />
+      <!-- F3 -->
+      <div class="step">
+        <span class="step-num">F3</span>
+        <h2 class="step-title">隱藏目錄與 MD5 雜湊</h2>
+        <p class="step-text">隱藏目錄取得 flag 3，同時拿到 MD5 雜湊作為圖片密碼。FTP 登入下載 trytofind.jpg。</p>
+        <pre>ftp [靶機 IP]</pre>
+        <div class="img-trio">
+          <img src="images/Flag3_1.png" alt="hidden dir" />
+          <img src="images/Flag3_2.png" alt="flag3" />
+          <img src="images/Flag3_3.png" alt="ftp" />
+        </div>
+      </div>
 
-  <h2>Flag 4 – 圖片藏密 + 密碼破解</h2>
-  <pre>hashbuster
+      <!-- F4 -->
+      <div class="step">
+        <span class="step-num">F4</span>
+        <h2 class="step-title">圖片隱寫 + 雜湊破解</h2>
+        <p class="step-text">hashbuster 破解 MD5，steghide 提取圖片內藏的 flag 4，並取得下一步帳號提示 <code>renu</code>。</p>
+        <pre>hashbuster
 steghide extract -sf trytofind.jpg</pre>
-  <p>將提示的密碼經由 hashbuster 工具破解，下載圖片後用 steghide 解開藏入的 flag 並解碼，
-    以及獲得提示 renu 這個 account 可以 hydra。</p>
-  <img src="images/Flag4_1.png" alt="hash nuster" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag4_2.png" alt="steghide" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag4_3.png" alt="flag4" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag4_4.png" alt="echo解碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <p>*卡題：在這一步卡了很久，雖然知道是MD5，但原本使用john來破解，一直沒有結果。</p>
-  <img src="images/Flag4_5.png" alt="卡題，john" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  
+        <div class="img-grid">
+          <img src="images/Flag4_1.png" alt="hashbuster" />
+          <img src="images/Flag4_2.png" alt="steghide" />
+          <img src="images/Flag4_3.png" alt="flag4" />
+          <img src="images/Flag4_4.png" alt="decoded" />
+        </div>
+        <div class="callout-stuck">
+          <div class="stuck-label">⚠ 卡關筆記</div>
+          <p>原本用 <strong>john</strong> 破解 MD5，等了很久都沒有結果。改用 <strong>hashbuster</strong> 後秒破。工具的選擇比暴力嘗試更重要。</p>
+        </div>
+        <div class="img-full"><img src="images/Flag4_5.png" alt="john failed" /></div>
+      </div>
 
-  <h2>Flag 5 – SSH 爆破登入</h2>
-  <pre>split -l 100000 rockyou.txt chunk_
-hydra -l renu -P chunk_01.txt ssh://[靶機 IP]
-ssh renu@[靶機 IP]</pre>
-  <p>我們用split指令將rockyou.txt 檔分成 14 等分之後並同時進行 hydra ，
-    最後破解出 renu 的密碼，爆破成功登入後，取得 flag5.txt。</p>
-  <img src="images/Flag5_1.png" alt="ssh renu account" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag5_2.png" alt="ssh renu account" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag5_3.png" alt="flag5" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag5_4.png" alt="echo解碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  
+      <!-- F5 -->
+      <div class="step">
+        <span class="step-num">F5</span>
+        <h2 class="step-title">SSH 密碼爆破</h2>
+        <p class="step-text">rockyou.txt 切成 14 份同時跑多個 hydra 實例加速爆破，成功取得 renu 的 SSH 密碼並登入取得 flag 5。</p>
+        <pre>split -l 100000 rockyou.txt chunk_
+hydra -l renu -P chunk_01.txt ssh://[靶機 IP]</pre>
+        <div class="img-grid">
+          <img src="images/Flag5_1.png" alt="split" />
+          <img src="images/Flag5_2.png" alt="hydra" />
+          <img src="images/Flag5_3.png" alt="login" />
+          <img src="images/Flag5_4.png" alt="flag5" />
+        </div>
+      </div>
 
-  <h2>Flag 6 – 進入 jimmy 資料夾</h2>
-  <p>在 /etc/passwd 中找到 jimmy，用已知密碼登入並取得 flag6。</p>
-  <img src="images/Flag5_5.png" alt="/etc" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag5_6.png" alt="passed" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag5_7.png" alt="/etc/passwd" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag6_1.png" alt="flag6" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag6_2.png" alt="echo解碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
+      <!-- F6 -->
+      <div class="step">
+        <span class="step-num">F6</span>
+        <h2 class="step-title">切換 jimmy 帳號</h2>
+        <p class="step-text">/etc/passwd 中發現 jimmy，以已知密碼登入取得 flag 6。</p>
+        <div class="img-trio">
+          <img src="images/Flag5_5.png" alt="/etc" />
+          <img src="images/Flag5_6.png" alt="passwd" />
+          <img src="images/Flag5_7.png" alt="jimmy" />
+        </div>
+        <div class="img-pair">
+          <img src="images/Flag6_1.png" alt="flag6" />
+          <img src="images/Flag6_2.png" alt="decoded" />
+        </div>
+      </div>
 
-  <h2>Flag 7 – bash 歷史分析</h2>
-  <p>破解 jimmy 密碼並登入其帳號，成功提權到 root ，
-    家目錄裡面有一個 .bash_history 儲存指令歷史的檔案，
-    從中看到有一個疑似 hint.txt 的檔案，但 /tmp 路徑下是沒有的，
-    所以從根目錄裡面發現還有一個 temp 的資料夾，也成功在下面找到 hint.txt 的檔案，
-    透過解碼獲得 flag7 。</p>
-  <img src="images/Flag7_1.png" alt="hydra jimmy" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag7_2.png" alt="ssh jimmy account" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag7_3.png" alt=".bash_history" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag7_4.png" alt="know hint.txt" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag7_5.png" alt="/tmp" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag7_6.png" alt="/temp" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag7_7.png" alt="get hint.txt" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag7_8.png" alt="echo解碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  
+      <!-- F7 -->
+      <div class="step">
+        <span class="step-num">F7</span>
+        <h2 class="step-title">bash 歷史分析</h2>
+        <p class="step-text">.bash_history 有 hint.txt 的蹤跡。/tmp 找不到，翻根目錄才在 /temp 發現並解碼取得 flag 7。</p>
+        <div class="img-grid">
+          <img src="images/Flag7_1.png" alt="hydra jimmy" />
+          <img src="images/Flag7_2.png" alt="ssh jimmy" />
+          <img src="images/Flag7_3.png" alt=".bash_history" />
+          <img src="images/Flag7_4.png" alt="clue" />
+        </div>
+        <div class="img-grid">
+          <img src="images/Flag7_5.png" alt="/tmp" />
+          <img src="images/Flag7_6.png" alt="/temp" />
+          <img src="images/Flag7_7.png" alt="hint.txt" />
+          <img src="images/Flag7_8.png" alt="flag7" />
+        </div>
+      </div>
 
-  <h2>Flag 8 – HTTP 傳輸與 strings 擷取</h2>
-  <p>在 root 的資料夾裡面有兩個檔案，但都無法直接開啟和下載，
-    因此將檔案移動到 HTTP 伺服器的目錄，並透過 wget 下載檔案。
-    透過 strings 掃描文件中的所有字節，提取出 ASCII 或 Unicode 格式的可見字符串，
-    其中包含一行可以解碼的字串，經由解碼得到 flag8 。 </p>
-  <img src="images/Flag8_1.png" alt="finish.zip and youseeme.jpg" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag8_2.png" alt="download" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag8_3.png" alt="wget file" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag8_4.png" alt="strings解碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag8_5.png" alt="echo解碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
+      <!-- F8 -->
+      <div class="step">
+        <span class="step-num">F8</span>
+        <h2 class="step-title">HTTP 傳輸 + strings 擷取</h2>
+        <p class="step-text">root 目錄的檔案移至 HTTP server，wget 下載後用 strings 掃出隱藏字串並解碼取得 flag 8。</p>
+        <div class="img-trio">
+          <img src="images/Flag8_1.png" alt="files" />
+          <img src="images/Flag8_2.png" alt="move" />
+          <img src="images/Flag8_3.png" alt="wget" />
+        </div>
+        <div class="img-pair">
+          <img src="images/Flag8_4.png" alt="strings" />
+          <img src="images/Flag8_5.png" alt="flag8" />
+        </div>
+      </div>
 
-  <h2>Flag 9 – 解壓縮 zip 檔</h2>
-  <p>根據提示解開 zip 取得 flag9。</p>
-  <img src="images/Flag9_1.png" alt="unzip file" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag9_2.png" alt="echo解碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
+      <!-- F9 + F10 合併 -->
+      <div class="step">
+        <span class="step-num">F9 / F10</span>
+        <h2 class="step-title">解壓 zip 與 binwalk 圖檔</h2>
+        <p class="step-text">根據提示解開加密 zip 取得 flag 9；binwalk 分析圖檔發現嵌入的未解壓檔案，解壓後取得 flag 10。</p>
+        <div class="img-grid">
+          <img src="images/Flag9_1.png" alt="unzip" />
+          <img src="images/Flag9_2.png" alt="flag9" />
+          <img src="images/Flag10_1.png" alt="binwalk" />
+          <img src="images/Flag10_2.png" alt="flag10" />
+        </div>
+      </div>
 
-  <h2>Flag 10 – 圖檔分析</h2>
-  <p>想到上課的時候老師也是在同一張圖片藏 txt ，
-    使用 binwalk 發現裡面有沒解壓縮的檔案，解完之後就得到 flag10 ！！</p>
-  <img src="images/Flag10_1.png" alt="binwalk file" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  <img src="images/Flag10_2.png" alt="echo解碼" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
-  
+    </div><!-- /steps -->
 
-  <h2>Root Flag – 提權</h2>
-  <p>成功進入 root 資料夾，讀取 root.txt 取得最終 flag！</p>
-  <img src="images/Flagroot.png" alt="rootflag" style="display: block; width: 100%; max-width: 800px; margin: 1rem auto;"/>
+    <!-- ROOT -->
+    <div class="root-block">
+      <span class="root-num">root</span>
+      <h2 class="root-title">Root flag — <span>完成！</span></h2>
+      <p class="root-desc">成功進入 root 目錄，讀取 root.txt 取得最終 flag。</p>
+      <img src="images/Flagroot.png" alt="root flag"
+           style="width:100%;max-width:680px;border-radius:12px;border:1px solid var(--border);display:block;margin:0 auto;" />
+    </div>
 
-  <p><a href="index.html">← 返回首頁</a></p>
+    <div class="page-nav">
+      <a href="index.html" class="btn-ghost">← 返回作品集</a>
+      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+        <span class="accent-tag">CTF</span>
+        <span class="accent-tag">Pentest</span>
+        <span class="accent-tag">Steganography</span>
+        <span class="accent-tag">Privilege Escalation</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer"><p>© 2025 Lara Lin</p></footer>
 </body>
 </html>
